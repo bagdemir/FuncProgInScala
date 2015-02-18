@@ -1,9 +1,22 @@
 package io.moo.exercises
 
-object OptionExercise {
-  println("Welcome to the Scala worksheet")       //> Welcome to the Scala worksheet
+/**
+ * Straem is an attempt to implement Stream library. (Typo is on purpose)
+ */
+object Straem {
 
-  sealed trait Stream[+A]
+  sealed trait Stream[+A] {
+
+    def toList(): List[A] = {
+      @annotation.tailrec
+      def toList(s: Stream[A], l: List[A]): List[A] = s match {
+        case Empty => Nil
+        case Cons(head, tail) => toList(tail(), head() :: l)
+      }
+      toList(this, Nil)
+    }
+  }
+
   case object Empty extends Stream[Nothing]
   case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
 
@@ -19,11 +32,7 @@ object OptionExercise {
     def apply[A](as: A*): Stream[A] = {
       println("apply")
       if (as.isEmpty) empty else cons(as.head, apply(as.tail: _*))
-      }
+    }
   }
-
-  Stream(1, 2, 3, 4)                              //> apply
-                                                  //| res0: io.moo.exercises.OptionExercise.Stream[Int] = Cons(<function0>,<functi
-                                                  //| on0>)
 
 }

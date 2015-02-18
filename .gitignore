@@ -5,6 +5,7 @@ bin
 .project
 .classpath
 .settings
+.cache 
 
 # sbt specific
 .cache/
