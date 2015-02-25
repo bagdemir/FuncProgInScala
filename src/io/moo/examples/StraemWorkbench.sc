@@ -17,6 +17,18 @@ object StraemWorkbench {
       case Cons(head, tail) if n > 0 => Cons(() => head(), () => tail().take(n - 1))
       case _ => Empty
     }
+
+    def drop(n: Int): Stream[A] = this match {
+      case Cons(head, tail) if n <= 0 => Cons(() => head(), () => tail().drop(n - 1))
+      case Cons(_, tail) => tail().drop(n - 1)
+      case _ => Empty
+    }
+
+    def takeWhile(p: A => Boolean): Stream[A] = this match {
+      case Cons(head, tail) if p(head()) => Cons(() => head(), () => tail().takeWhile(p))
+      case Cons(_, tail) => tail().takeWhile(p)
+      case _ => Empty
+    }
   }
 
   case object Empty extends Stream[Nothing]
@@ -28,7 +40,7 @@ object StraemWorkbench {
       lazy val tail = tl;
       Cons(() => head, () => tail)
     }
-    
+
     def empty[A]: Stream[A] = Empty
 
     def apply[A](as: A*): Stream[A] = {
@@ -36,5 +48,5 @@ object StraemWorkbench {
     }
   }
 
-  Stream(1, 2, 3, 4).take(3) toList               //> res0: List[Int] = List(1, 2, 3)
+  Stream(1, 2, 3, 4).takeWhile(_ % 2 == 0) toList //> res0: List[Int] = List(2, 4)
 }
