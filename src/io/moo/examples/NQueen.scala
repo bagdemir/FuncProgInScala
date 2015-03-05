@@ -1,4 +1,4 @@
-package com.bagdemir.examples
+package io.moo.examples
 
 class NQueen(n: Int) {
   def isSafe(row: Int, solution: List[Int]): Boolean = {
