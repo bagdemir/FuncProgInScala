@@ -1,7 +1,7 @@
 package com.bagdemir.funcprog.examples
 
 /**
- * Straem is an attempt to implement Streams - which already exist in standard Scala libraries. (Typo is on purpose)
+ * Stream example solutions.
  */
 object Stream {
 
