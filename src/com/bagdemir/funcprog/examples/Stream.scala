@@ -1,8 +1,16 @@
-package io.moo.exercises
+package com.bagdemir.funcprog.examples
 
-object StraemWorkbench {
+/**
+ * Straem is an attempt to implement Stream library. (Typo is on purpose)
+ */
+object Stream {
 
   sealed trait Stream[+A] {
+
+    def foldRight[B](z: => B)(f: (A, => B) => B): B = this match {
+      case Cons(h, t) => f(h(), t().foldRight(z)(f))
+      case _ => z
+    }
 
     def toList(): List[A] = {
       @annotation.tailrec
@@ -29,6 +37,13 @@ object StraemWorkbench {
       case Cons(_, tail) => tail().takeWhile(p)
       case _ => Empty
     }
+
+    def takeWhile2(p: A => Boolean): Stream[A] = foldRight[Stream[A]](Empty)((a, b) => p(a) match {
+      case true => Cons(() => a, () => b)
+      case _ => b
+    })
+
+    def forAll(p: (A) => Boolean): Boolean = foldRight(false)((a, b) => p(a))
   }
 
   case object Empty extends Stream[Nothing]
@@ -47,6 +62,4 @@ object StraemWorkbench {
       if (as.isEmpty) empty else cons(as.head, apply(as.tail: _*))
     }
   }
-
-  Stream(1, 2, 3, 4).takeWhile(_ % 2 == 0) toList //> res0: List[Int] = List(2, 4)
 }
