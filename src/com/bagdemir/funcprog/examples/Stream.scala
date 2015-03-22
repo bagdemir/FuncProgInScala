@@ -5,6 +5,16 @@ package com.bagdemir.funcprog.examples
  */
 object Stream {
 
+  import scala.reflect.runtime.{universe => ru}
+  
+  case class SimpleAnnotation() extends scala.annotation.StaticAnnotation
+  
+  @SimpleAnnotation
+  case class ClassWithAnnotation()
+  
+  val simpleClassSymbol = ru.typeOf[ClassWithAnnotation].typeSymbol.asClass
+  def anno = simpleClassSymbol.annotations
+  
   sealed trait Stream[+A] {
 
     def foldRight[B](z: => B)(f: (A, => B) => B): B = this match {

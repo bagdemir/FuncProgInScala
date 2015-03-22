@@ -34,12 +34,12 @@ object StreamWorkbench {
       case Cons(_, tail) => tail().takeWhile(p)
       case _ => Empty
     }
-
+/*
     def takeWhile2(p: A => Boolean): CStream[A] = foldRight[CStream[A]](Empty)((a, b) => p(a) match {
       case true => Cons(() => a, () => b)
       case _ => b
     })
-
+*/
     def forAll(p: (A) => Boolean): Boolean = foldRight(false)((a, b) => p(a))
   }
 
@@ -60,6 +60,5 @@ object StreamWorkbench {
     }
   }
 
-  CStream(1, 2, 3, 4).takeWhile2(_ % 2 == 0) toList
-                                                  //> res0: List[Int] = List(2, 4)
+ // CStream(1, 2, 3, 4).takeWhile2(_ % 2 == 0) toList
 }
