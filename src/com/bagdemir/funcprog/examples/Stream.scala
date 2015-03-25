@@ -1,7 +1,9 @@
 package com.bagdemir.funcprog.examples
 
 /**
- * Stream example solutions.
+ * Functional Programming in Scala - Chapter 5 Answer Key.
+ * ISBN-10: 1617290653
+ * ISBN-13: 978-1617290657
  */
 object Stream {
 
@@ -22,6 +24,7 @@ object Stream {
       case _ => z
     }
 
+    // Example 5.1 (Page 69)
     def toList(): List[A] = {
       @annotation.tailrec
       def toList(s: Stream[A], acc: List[A]): List[A] = s match {
@@ -30,30 +33,34 @@ object Stream {
       }
       toList(this, Nil) reverse
     }
-
+    // Example 5.2 (Page 70)
     def take(n: Int): Stream[A] = this match {
       case Cons(head, tail) if n > 0 => Cons(() => head(), () => tail().take(n - 1))
       case _ => Empty
     }
-
+    
+    // Example 5.2 (Page 70)
     def drop(n: Int): Stream[A] = this match {
       case Cons(head, tail) if n <= 0 => Cons(() => head(), () => tail().drop(n - 1))
       case Cons(_, tail) => tail().drop(n - 1)
       case _ => Empty
     }
 
+    // Example 5.3 (Page 70)
     def takeWhile(p: A => Boolean): Stream[A] = this match {
       case Cons(head, tail) if p(head()) => Cons(() => head(), () => tail().takeWhile(p))
       case Cons(_, tail) => tail().takeWhile(p)
       case _ => Empty
     }
 
+    // Example 5.4 (Page 71)
+    def forAll(p: (A) => Boolean): Boolean = foldRight(false)((a, b) => p(a))
+    
+    // Example 5.5 (Page 71)
     def takeWhile2(p: A => Boolean): Stream[A] = foldRight[Stream[A]](Empty)((a, b) => p(a) match {
       case true => Cons(() => a, () => b)
       case _ => b
     })
-
-    def forAll(p: (A) => Boolean): Boolean = foldRight(false)((a, b) => p(a))
   }
 
   case object Empty extends Stream[Nothing]
