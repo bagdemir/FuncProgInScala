@@ -4,6 +4,8 @@ package com.bagdemir.funcprog.examples
  * Functional Programming in Scala - Chapter 5 Answer Key.
  * ISBN-10: 1617290653
  * ISBN-13: 978-1617290657
+ *
+ * @author bagdemir
  */
 object Stream {
 
@@ -38,7 +40,7 @@ object Stream {
       case Cons(head, tail) if n > 0 => Cons(() => head(), () => tail().take(n - 1))
       case _ => Empty
     }
-    
+
     // Example 5.2 (Page 70)
     def drop(n: Int): Stream[A] = this match {
       case Cons(head, tail) if n <= 0 => Cons(() => head(), () => tail().drop(n - 1))
@@ -55,9 +57,18 @@ object Stream {
 
     // Example 5.4 (Page 71)
     def forAll(p: (A) => Boolean): Boolean = foldRight(false)((a, b) => p(a))
-    
+
     // Example 5.5 (Page 71)
     def takeWhile2(p: A => Boolean): Stream[A] = foldRight[Stream[A]](Empty)((a, b) => p(a) match {
+      case true => Cons(() => a, () => b)
+      case _ => b
+    })
+
+    // Example 5.7 (Page 72)
+    def map[B](f: A => B) = foldRight[Stream[B]](Empty)((a, b) => Cons(() => f(a), () => b))
+
+    // Example 5.7 (Page 72)
+    def filter(f: A => Boolean) = foldRight[Stream[A]](Empty)((a, b) => f(a) match {
       case true => Cons(() => a, () => b)
       case _ => b
     })
