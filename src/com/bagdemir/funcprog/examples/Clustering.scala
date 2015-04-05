@@ -119,5 +119,4 @@ object Clustering {
     /* solve the problem */
     println(findSpacing(sorted.toList, Nil, numberOfVertices, clusters.toList))
   }
-
 }
